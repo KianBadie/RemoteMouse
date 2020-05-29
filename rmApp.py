@@ -1,0 +1,12 @@
+def app(environ, start_response):
+    """
+    A barebones WSGI application.
+    This is a starting point for your own Web framework :)
+    """
+    status = '200 OK'
+    response_headers = [('Content-Type', 'text/html')]
+    start_response(status, response_headers)
+    response = []
+    with open('index.html', 'r+b') as page:
+        response.append(page.read())
+    return response

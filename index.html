@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      RemoteMouse
+    </title>
+  </head>
+  <body>
+    <p>Hello World!</p>
+  </body>
+</html>
+
+<script>
+    document.addEventListener('touchmove', e => {
+        let { screenX, screenY } = e.changedTouches[0];
+        socket.send({ screenX, screenY });
+    });
+    let socket = new WebSocket("ws://192.168.254.39:8888");
+    socket.onopen = () => {
+      console.log('Connection opened');
+      document.addEventListener('touchmove', e => {
+        let { screenX, screenY } = e.changedTouches[0];
+        socket.send(JSON.stringify({ screenX, screenY }));
+    });
+    }
+</script>
