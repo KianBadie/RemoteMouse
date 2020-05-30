@@ -35,7 +35,7 @@ class Server():
        self.headers_set = []
     
     def serve_forever(self):
-        print('Proxy server listening on %s:%s' % self.server_address)
+        print('HTTP Server listening on %s:%s' % self.server_address)
         while True:
             client_connection, client_address = self.listen_socket.accept()
             self.handle_request(client_connection)
@@ -97,7 +97,7 @@ class Server():
             client_connection.close()
 
     def shut_down(self):
-        print('\nClosing Proxy Server on %s:%s\n' % self.server_address)
+        print('\nClosing HTTP Server on %s:%s\n' % self.server_address)
         self.listen_socket.close()
 
 app_path = sys.argv[1]
