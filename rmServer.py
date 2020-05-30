@@ -45,17 +45,10 @@ class Server():
         print(request_data)
 
         request_parsed = Request(request_data)
-        if 'Upgrade' in request_parsed.headers:
-            key = self.get_websocket_key(request_parsed)
-            status = '101 Switching Protocols'
-            response_headers = [('Sec-WebSocket-Accept', key), ('Upgrade', 'websocket'), ('Connection', 'Upgrade')]
-            self.start_response(status, response_headers)
-            self.finish_response([b'Test message'], client_connection)
-        else:
-            # Construct environment dictionary using request data
-            env = self.get_environ(request_parsed.request, request_data)
-            result = self.app(env, self.start_response)
-            self.finish_response(result, client_connection)
+        # Construct environment dictionary using request data
+        env = self.get_environ(request_parsed.request, request_data)
+        result = self.app(env, self.start_response)
+        self.finish_response(result, client_connection)
 
     def parse_request(self, request_data):
         request_line = request_data.splitlines()[0]
@@ -102,15 +95,9 @@ class Server():
             client_connection.sendall(response_bytes)
         finally:
             client_connection.close()
-    
-    def get_websocket_key(self, request_parsed):
-        magic_string = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11'
-        websocket_key = sha1()
-        websocket_key.update(bytes(request_parsed.headers['Sec-WebSocket-Key'] + magic_string, 'utf-8'))
-        return b64encode(websocket_key.digest()).decode()
 
     def shut_down(self):
-        print('\nClosing connection on %s:%s\n' % self.server_address)
+        print('\nClosing Proxy Server on %s:%s\n' % self.server_address)
         self.listen_socket.close()
 
 app_path = sys.argv[1]
