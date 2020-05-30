@@ -35,7 +35,7 @@ class Server():
        self.headers_set = []
     
     def serve_forever(self):
-        print('Listening on %s:%s' % self.server_address)
+        print('Proxy server listening on %s:%s' % self.server_address)
         while True:
             client_connection, client_address = self.listen_socket.accept()
             self.handle_request(client_connection)

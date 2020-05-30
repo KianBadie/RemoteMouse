@@ -6,21 +6,47 @@
     </title>
   </head>
   <body>
-    <p>Hello World!</p>
+
   </body>
 </html>
 
 <script>
-    document.addEventListener('touchmove', e => {
-        let { screenX, screenY } = e.changedTouches[0];
-        socket.send({ screenX, screenY });
-    });
-    let socket = new WebSocket("ws://192.168.254.39:8888");
-    socket.onopen = () => {
+    let socket = new WebSocket("ws://192.168.254.36:8888");
+    socket.onopen = (e) => {
       console.log('Connection opened');
+
+      let prevX = 0;
+      let prevY = 0;
+      let touchmove = false;
+
       document.addEventListener('touchmove', e => {
+        touchmove = true;
         let { screenX, screenY } = e.changedTouches[0];
-        socket.send(JSON.stringify({ screenX, screenY }));
-    });
+        changeX = screenX - prevX;
+        changeY = screenY - prevY;
+        headers = { Type: 'move' }
+        data = { changeX, changeY }
+        let message = JSON.stringify({ Headers: headers, Data: data });
+        socket.send(message);
+        prevX = screenX;
+        prevY = screenY;
+      });
+
+      document.addEventListener('touchstart', e => {
+        let { screenX, screenY } = e.changedTouches[0];
+        prevX = screenX;
+        prevY = screenY;
+      });
+
+      document.addEventListener('touchend', e=> {
+        if (!touchmove) {
+          headers = { Type: 'tap' }
+          let message = JSON.stringify({ Headers: headers, Data: {} });
+          socket.send(message);
+        }
+        else {
+          touchmove = false;
+        }
+      });
     }
 </script>
