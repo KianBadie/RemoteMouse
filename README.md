@@ -2,9 +2,9 @@
 
 This is a program to control the computer mouse through a mobile browser on the same local network written mostly in Python.
 
-`requirements.txt` is not up to date. There are unnecessary files in there.
+`requirements.txt` is not up to date. There are unnecessary modules in there.
 
-## Resources
+## Accreditation/Resources
 
 I did not write the servers from scratch. I learned a lot from the resources listed below. I used these resources to heavily model/inspire my code and built upon them to implement the features I wanted to.
 
